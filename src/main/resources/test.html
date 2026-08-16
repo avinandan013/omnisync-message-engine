@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STOMP Test</title>
+</head>
+<body>
+
+<h2>STOMP WebSocket Test</h2>
+
+<button onclick="connect()">Connect</button>
+<button onclick="subscribe()">Subscribe</button>
+<button onclick="sendMessage()">Send Message</button>
+
+<pre id="output"></pre>
+
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.1.1/bundles/stomp.umd.min.js"></script>
+
+<script>
+
+    let client;
+
+    function log(message) {
+        document.getElementById("output").textContent += message + "\n";
+    }
+
+    function connect() {
+
+        client = new StompJs.Client({
+            brokerURL: 'ws://localhost:8080/chat',
+
+            debug: function (str) {
+                log(str);
+            },
+
+            onConnect: function (frame) {
+                log("CONNECTED!");
+                log(frame);
+            },
+
+            onStompError: function (frame) {
+                log("STOMP ERROR:");
+                log(frame);
+            }
+        });
+
+        client.activate();
+    }
+
+    function subscribe() {
+
+        client.subscribe(
+            '/topic/room/levizol-1',
+            function (message) {
+
+                log("MESSAGE RECEIVED:");
+                log(message.body);
+
+            }
+        );
+
+        log("Subscribed to /topic/room/levizol-1");
+    }
+
+    function sendMessage() {
+
+        client.publish({
+            destination: '/app/sendMessage/levizol-1',
+            body: JSON.stringify({
+                roomId: 'levizol-1',
+                sender: 'dante',
+                content: 'what are you doing'
+            })
+        });
+
+        log("Message sent!");
+    }
+
+</script>
+
+</body>
+</html>
