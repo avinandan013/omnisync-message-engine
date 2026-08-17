@@ -1,8 +1,6 @@
 package com.omnisync.message_engine.controllers;
+import com.omnisync.message_engine.controllers.controllersImpl.RoomControllerImpl;
 
-import com.omnisync.message_engine.Service.CreateRoom;
-import com.omnisync.message_engine.Service.GetMessages;
-import com.omnisync.message_engine.Service.JoinRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,30 +12,32 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class RoomController {
 
+
     @Autowired
-    private CreateRoom createRoom;
-    @Autowired
-    private JoinRoom joinRoom;
-    @Autowired
-    private GetMessages getMessages;
+    private RoomControllerImpl roomControllerImpl;
+
+
 
     //? Create Room
     @PostMapping
     public ResponseEntity<?> createRoom(@RequestBody String roomName) {
-        return createRoom.roomCreation(roomName);
+        return roomControllerImpl.roomCreation(roomName);
     }
+
+
 
     //* get Room : join
     @GetMapping("/{roomName}")
     public ResponseEntity<?> joinRoom(@PathVariable String roomName) {
-        return joinRoom.roomJoin(roomName);
+        return roomControllerImpl.roomJoin(roomName);
     }
 
-    //! get message from Room
 
+
+    //! get message from Room
     @GetMapping("/{roomName}/messages")
     public ResponseEntity<?> getMessages(@PathVariable String roomName){
-        return getMessages.getMessagesFromRoom(roomName);
+        return roomControllerImpl.getMessage(roomName);
     }
 
 }

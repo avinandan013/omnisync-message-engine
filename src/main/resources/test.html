@@ -49,7 +49,7 @@
     function subscribe() {
 
         client.subscribe(
-            '/topic/room/levizol-1',
+            '/topic/room/levizol-3',
             function (message) {
 
                 log("MESSAGE RECEIVED:");
@@ -58,17 +58,17 @@
             }
         );
 
-        log("Subscribed to /topic/room/levizol-1");
+        log("Subscribed to /topic/room/levizol-3");
     }
 
     function sendMessage() {
 
         client.publish({
-            destination: '/app/sendMessage/levizol-1',
+            destination: '/app/sendMessage/levizol-3',
             body: JSON.stringify({
-                roomId: 'levizol-1',
+                roomId: 'levizol-3',
                 sender: 'dante',
-                content: 'what are you doing'
+                content: ''
             })
         });
 
